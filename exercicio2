@@ -1,0 +1,88 @@
+package exercicio2pl7;
+
+import java.util.Scanner;
+
+public class Exercicio2PL7 {
+
+    static Scanner inputInt = new Scanner(System.in);
+    static Scanner inputString = new Scanner(System.in);
+
+    
+    public static void main(String[] args) {
+        //a)
+        int size = 20, count, somaVenc = 0, i;
+        float mediaVenc;
+        String[] nome = new String[size];
+        String temp;
+        int[] venc = new int[size];
+
+        System.out.println("Para terminar a leitura, insira o nome 'tt'");
+        System.out.println("Nome:");
+        temp = LerStringCons();
+        count = 0;
+        while (!"tt".equals(temp) && count < size) {
+            nome[count] = temp;
+
+            System.out.println("Vencimento:");
+            venc[count] = LerIntCons();
+
+            somaVenc += venc[count];
+
+            count++;
+            System.out.println("count: " + count);
+
+            if (count < size) {
+                System.out.println("Nome:");
+                temp = LerStringCons();
+            }
+        }
+        if (count == size) {
+            System.out.println("O limite máximo foi atingido");
+        } else {
+            System.out.println("Foi inserido o nome tt");
+        }
+
+        //b)
+        if (count != 0) {
+            mediaVenc = somaVenc / count;
+            for (i = 0; i < count; i++) {
+                if (venc[i] < mediaVenc && !"".equals(nome[i])) {
+                    System.out.println("O funcionário " + nome[i] + " tem o vencimento abaixo da média");
+                }
+            }
+        } else {
+            System.out.println("Não é possível calcular a média");
+        }
+
+        //c
+        System.out.println("Insira um valor limite");
+        int lim = LerIntCons();
+        int countLim = 0;
+        float perc;
+        for (i = 0; i < count; i++) {
+            if (!"".equals(nome[i]) && venc[i] < lim) {
+                countLim++;
+            }
+        }
+        if (count != 0) {
+            perc = (countLim * 100) / count;
+            //System.out.println("Percentagem: " + perc);
+            System.out.println("percentagem " + perc);
+        } else {
+            System.out.println("sem dados");
+        }
+    }
+
+    public static int LerIntCons() {
+        int x;
+        x = inputInt.nextInt();
+        return x;
+    }
+
+    public static String LerStringCons() {
+        String x;
+        x = inputString.nextLine();
+        return x;
+    }
+
+}
