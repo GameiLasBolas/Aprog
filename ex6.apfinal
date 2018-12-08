@@ -1,0 +1,76 @@
+package projetofinalaprog;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class ex6 {
+
+    public static void GuardarPontos(String[] jogos, String JogoID, String NomeFich, int nParticipantes, String[][] participantes, int[][] pontos) throws FileNotFoundException {
+        int PosJogo = PosJogo(jogos, JogoID);
+        if (PosJogo == -1) {
+            System.out.println("Jogo não encontrado");
+        } else {
+            int i = 0;
+            int PontMax = MaximoDePontos(jogos, PosJogo);
+            Scanner ler = new Scanner(new File(NomeFich));
+            while (ler.hasNextLine() && i < nParticipantes) {
+                String linha = ler.nextLine();
+                if ((linha.trim()).length() > 0) {
+                    String[] flag = linha.split(";");
+                    int PosPart = PosParticipante(participantes, nParticipantes, flag[0].trim());
+                    if (PosPart == -1) {
+                        System.out.println("Participante não encontrado");
+                        PontosInvalidos(pontos, PosJogo, nParticipantes);
+                    } else {
+                        if (VerificarPontos(PontMax, Integer.parseInt(flag[1].trim()))) {
+                            pontos[PosPart][PosJogo] = Integer.parseInt(flag[1].trim());
+                            i++;
+                        } else {
+                            System.out.println("Pontos inválidos");
+                            PontosInvalidos(pontos, PosJogo, nParticipantes);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static int MaximoDePontos(String[] jogos, int PosJogo) {
+        String[] flag = jogos[PosJogo].split("-");
+        return Integer.parseInt(flag[2]);
+    }
+
+    public static int PosJogo(String[] jogos, String JogoID) {
+        for (int i = 0; i < jogos.length; i++) {
+            String[] flag = jogos[i].split("-");
+            if (flag[0].equals(JogoID)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static int PosParticipante(String[][] participantes, int nParticipantes, String email) {
+        for (int i = 0; i < nParticipantes; i++) {
+            if (email.equals(participantes[i][0])) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static boolean VerificarPontos(int PontMax, int PontPart) {
+        if (PontPart > 0 && PontPart <= PontMax) {
+            return true;
+        }
+        return false;
+    }
+
+    public static void PontosInvalidos(int[][] pontos, int posJogos, int nParticipantes) {
+        for (int i = 0; i < nParticipantes; i++) {
+            pontos[i][posJogos] = 0;
+        }
+
+    }
+}
