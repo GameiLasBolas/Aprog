@@ -1,0 +1,91 @@
+package projetofinalaprog;
+
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import static projetofinalaprog.Constantes.MAX_PARTICIPANTES;
+import static projetofinalaprog.Constantes.N_CAMPOS_INFO;
+import static projetofinalaprog.Constantes.N_JOGOS;
+import static projetofinalaprog.ex6.PosJogo;
+
+public class ProjetoFinalAprog {
+
+    public static void main(String[] args) throws FileNotFoundException {
+        Scanner in = new Scanner(System.in);
+        String[] jogos = new String[N_JOGOS];
+        String[][] participantes = new String[MAX_PARTICIPANTES][N_CAMPOS_INFO];
+        int nParticipantes = 0;
+        int[][] pontos = new int[MAX_PARTICIPANTES][N_JOGOS];
+        double[][] premios = new double[MAX_PARTICIPANTES][N_JOGOS];
+        int op;
+        do {
+            op = menu.menu();
+            switch (op) {
+                case 1:
+                    System.out.println("Qual a data do evento (AAAAMMDD)?");
+                    String nomeFich = in.nextLine();
+                    if (ex1.carregarJogosDoEvento(nomeFich + ".txt", jogos)) {
+                        System.out.println("Jogos carregados com sucesso");
+                    } else {
+                        System.out.println("Erro no carregamento dos jogos. Verifique ficheiro");
+                    }
+                    break;
+                case 2:
+                    ex2.visualizarInfoJogos(jogos);
+
+                    break;
+                case 3:
+                    System.out.println("Escreva o nome do ficheiro com a informação da sua equipa");
+                    String infoFich = in.nextLine();
+                    nParticipantes = ex3.lerInfoFicheiro(infoFich + ".txt", participantes, nParticipantes);
+
+// …
+                    break;
+                case 4:
+                    ex4.listagemPaginada(participantes, nParticipantes);
+                    break;
+
+                case 5:
+                    System.out.println("Introduza o Email do participante que prentede alterar os dados");
+                    String eMail = in.nextLine();
+                    ex5.actualizarInfoParticipante(eMail, participantes, nParticipantes);
+                    break;
+                case 6:
+                    System.out.println("Introduza a data do evento");
+                    String dataEvento = in.nextLine();
+                    System.out.println("Introduza o ID do jogo");
+                    String JogoID = in.nextLine();
+                    ex6.GuardarPontos(jogos, JogoID, dataEvento + "_" + JogoID + ".txt", nParticipantes, participantes, pontos);
+                    break;
+                case 7:
+                    ex7.backup(participantes, pontos, nParticipantes, jogos);
+                    break;
+                case 8:
+                    System.out.println("Introduza a data do evento");
+                    dataEvento = in.nextLine();
+                    ex8.calcPremios(premios, pontos, participantes, nParticipantes, jogos, dataEvento);
+                    break;
+                case 9:
+                    System.out.println("Introduza o nome da equipa que pretende remover");
+                    String nomeEquipa = in.nextLine();
+                    nParticipantes = ex9.removerEquipa(participantes, pontos, premios, nParticipantes, nomeEquipa);
+                    break;
+                case 10:
+                    System.out.println("Introduza o nome da equipa da qual pretende ver os pontos");
+                    nomeEquipa = in.nextLine();
+                    ex10.mostrarInfoPremiosEquipa(nomeEquipa, participantes, premios, nParticipantes);
+                case 0:
+                    System.out.println(
+                            "Já fez todas as gravações necessárias? Confirma terminar(s/n)?");
+                    char resp = (in.next()).charAt(0);
+                    if (resp != 's' && resp != 'S') {
+                        op = 1;
+                    }
+                    break;
+                default:
+                    System.out.println("Opção incorreta. Repita");
+                    break;
+            }
+        } while (op != 0);
+    }
+
+}
