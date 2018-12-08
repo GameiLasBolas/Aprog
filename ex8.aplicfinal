@@ -1,0 +1,97 @@
+package projetofinalaprog;
+
+public class ex8 {
+
+    public static void calcPremios(double[][] premios, int[][] pontos, String[][] participantes, int numParticipantes, String[] infoJogos, String dataEvento) {
+        int jogo;
+
+        for (jogo = 0; jogo < pontos[0].length; jogo++) {
+            int maxPontosJogo = ex6.MaximoDePontos(infoJogos, jogo);
+
+            guardarPremiosVencedoresIndiv(premios, pontos, numParticipantes, maxPontosJogo, jogo);
+
+            guardarPremiosEquipasVencedoras(premios, pontos, numParticipantes, jogo);
+        }
+
+        for (int participante = 0; participante < numParticipantes; participante++) {
+            String dataNascimento = utilitarios.converterFormatoData(participantes[participante][2]);
+            int idadeParticipante = utilitarios.verificarAniversário(dataNascimento, dataEvento);
+
+            if (idadeParticipante != 0) {
+                int premioSuplementar = calcPremioSuplementar(idadeParticipante);
+                for (jogo = 0; jogo < pontos[0].length; jogo++) {
+                    if (premios[participante][jogo] != 0) {
+                        premios[participante][jogo] += premioSuplementar;
+                    }
+                }
+            }
+        }
+    }
+
+    public static int calcPremioSuplementar(int idadeParticipante) {
+        int premioSuplementar = 2 * idadeParticipante;
+
+        return premioSuplementar;
+    }
+
+    public static void guardarPremiosVencedoresIndiv(double[][] premios, int[][] pontos, int numParticipantes, int maxPontosJogo, int jogo) {
+        int maxPontosObtidos = determinarMaxPontosObtidos(pontos, jogo, numParticipantes);
+
+        if (maxPontosObtidos != 0) {
+            for (int i = 0; i < numParticipantes; i++) {
+                if (pontos[i][jogo] == maxPontosObtidos) {
+                    premios[i][jogo] += calcNumPremiosVencedor(maxPontosObtidos, maxPontosJogo);
+                }
+            }
+        }
+
+    }
+
+    public static int determinarMaxPontosObtidos(int[][] pontos, int jogo, int numParticipantes) {
+        int maxPontosObtidos = 0;
+        for (int i = 0; i < numParticipantes; i++) {
+            if (pontos[i][jogo] > maxPontosObtidos) {
+                maxPontosObtidos = pontos[i][jogo];
+            }
+        }
+        return maxPontosObtidos;
+    }
+
+    public static double calcNumPremiosVencedor(int maxPontosObtidos, int maxPontosJogo) {
+        double numPremios = (double) maxPontosObtidos / maxPontosJogo * 100;
+
+        return numPremios;
+    }
+
+    public static void guardarPremiosEquipasVencedoras(double[][] premios, int[][] pontos, int numParticipantes, int jogo) {
+        int maxSomaPontosObtidos = determinarMaxSomaPontosObtidos(pontos, numParticipantes, jogo);
+
+        if (maxSomaPontosObtidos != 0) {
+            for (int i = 0; i < numParticipantes - 3; i += 3) {
+                int somaPontosObtidos = pontos[i][jogo] + pontos[i + 1][jogo] + pontos[i + 2][jogo];
+
+                if (somaPontosObtidos == maxSomaPontosObtidos) {
+                    for (int j = i; j < i + 3; j++) {
+                        premios[j][jogo] += Constantes.PREMIO_POR_ELEMENTO_DA_EQUIPA_VENCEDORA;
+                    }
+                }
+
+            }
+        }
+
+    }
+
+    public static int determinarMaxSomaPontosObtidos(int[][] pontos, int numParticipantes, int jogo) {
+        int maxSomaPontosObtidos = 0;
+
+        for (int i = 0; i < numParticipantes - 3; i += 3) {
+            int somaPontosObtidos = pontos[i][jogo] + pontos[i + 1][jogo] + pontos[i + 2][jogo];
+
+            if (somaPontosObtidos > maxSomaPontosObtidos) {
+                maxSomaPontosObtidos = somaPontosObtidos;
+            }
+        }
+
+        return maxSomaPontosObtidos;
+    }
+}
