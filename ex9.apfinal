@@ -1,0 +1,30 @@
+package projetofinalaprog;
+public class ex9 {
+
+    public static int removerEquipa(String[][] participantes, int[][] pontos, double[][] premios, int nParticipantes, String nomeEquipa) {
+        int posEquipa = pesquisarEquipa(participantes, nParticipantes, nomeEquipa);
+
+        if (posEquipa == -1) {
+            //EQUIPA NAO ENCONTRADA
+        } else {
+            for (int i = posEquipa; i < nParticipantes - 3; i++) {
+                participantes[i] = participantes[i + 3];
+                pontos[i] = pontos[i + 3];
+                premios[i] = premios[i + 3];
+                nParticipantes -= 3;
+            }
+        }
+        
+        return nParticipantes;
+    }
+
+    public static int pesquisarEquipa(String[][] participantes, int numParticipantes, String nomeEquipa) {
+        for (int i = 0; i < numParticipantes; i++) {
+            if (participantes[i][3].equals(nomeEquipa)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+}
