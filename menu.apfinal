@@ -1,0 +1,25 @@
+package projetofinalaprog;
+
+import java.util.Scanner;
+public class menu {
+    
+     public static int menu() {
+        Scanner ler = new Scanner(System.in);
+        String texto = "1-CARREGAR UM FICHEIRO COM A INFORMAÇÃO DOS JOGOS DO EVENTO"
+                + "\n2-INFORMAÇÃO DOS JOGOS"
+                + "\n3-ADICONAR UMA EQUIPA"
+                + "\n4-VER INFORMAÇÃO DA EQUIPA"
+                + "\n5-ATUALIZAR INFORMAÇÃO DE UM PARTICIPANTE"
+                + "\n6-CARREGAR PONTOS DE UM DETERMINADO JOGO"
+                + "\n7-GUARDAR A INFORMAÇÃO DOS PARTICIPANTES E DOS PONTOS NO FICHEIRO BACKUP"
+                + "\n8-CALCULAR E GAURDAR OS PREMIOS DOS PARTICIPANTES"
+                + "\n9-REMOVER A INFORMAÇÃO RELATIVA A UMA EQUIPA"
+                + "\n10-VISUALIZAR OS PREMIOS DOS ELEMENTOS"
+                + "\n0-TERMINAR PROGRAMA";
+        System.out.println(texto);
+        System.out.println("\nSelecione uma opção: ");
+        int op = ler.nextInt();
+        ler.nextLine();
+        return op;
+    }
+}
