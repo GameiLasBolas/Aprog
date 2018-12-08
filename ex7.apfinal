@@ -1,0 +1,33 @@
+package projetofinalaprog;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Formatter;
+import static projetofinalaprog.Constantes.MAX_PARTICIPANTES;
+import static projetofinalaprog.Constantes.N_JOGOS;
+
+public class ex7 {
+
+    public static void backup(String[][] participantes, int[][] pontos, int nParticipantes, String[] jogos) throws FileNotFoundException {
+        Formatter out = new Formatter(new File("backup.txt"));
+        out.format("%42s%n", "Pontuações");
+        out.format("%58s%n%n", "==========================================");
+        for (int i=0; i<jogos.length; i++){
+            String[] temp = jogos[i].split("-");
+            if (i == 0) {
+                out.format("%22s", temp[0]);
+            } else {
+                out.format("%9s", temp[0]);
+            }
+        }
+        out.format("%n");
+        for (int i = 0; i < nParticipantes; i++) {
+            out.format("%12s%s", participantes[i][0], " ");
+            for (int j = 0; j < N_JOGOS; j++) {
+                out.format("%9d", pontos[i][j]);
+            }
+            out.format("%n");
+        }
+        out.close();
+    }
+}
